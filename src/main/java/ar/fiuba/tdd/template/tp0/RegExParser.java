@@ -74,6 +74,20 @@ public class RegExParser {
         }
     }
 
+    public void findLiterals() {
+        boolean escapedFlag = false;
+        for (int positionIndex = 0; positionIndex < this.originalRegularExpr.length(); positionIndex++) {
+            String charToAnalize = this.getStringInPosition(this.originalRegularExpr,positionIndex);
+            if ( !charToAnalize.equals(CHAR_USED_POSITION)) {
+                if (charToAnalize.equals(CHAR_ESCAPE) && !escapedFlag) {
+                    escapedFlag = true;
+                } else {
+                    this.addLiteral(charToAnalize, positionIndex);
+                }
+            }
+        }
+    }
+
     public void findGenerics() {
         this.find(this.CHAR_GENERIC);
     }
@@ -109,6 +123,7 @@ public class RegExParser {
         this.findCharUsedPosition();
         this.findSets();
         this.findGenerics();
+        this.findLiterals();
         return regExVector;
     }
 
