@@ -22,18 +22,17 @@ public class RegExGeneratorTest {
 
     private boolean validate(String regEx, int numberOfResults) {
         RegExGenerator generator = new RegExGenerator();
-        // TODO: Uncomment parameters
         List<String> results = generator.generate(regEx, numberOfResults);
         // force matching the beginning and the end of the strings
         Pattern pattern = Pattern.compile("^" + regEx + "$");
         return results
                 .stream()
                 .reduce(true,
-                    (acc, item) -> {
-                        Matcher matcher = pattern.matcher(item);
-                        return acc && matcher.find();
-                    },
-                    (item1, item2) -> item1 && item2);
+                        (acc, item) -> {
+                            Matcher matcher = pattern.matcher(item);
+                            return acc && matcher.find();
+                        },
+                        (item1, item2) -> item1 && item2);
     }
 
     @Test
@@ -70,7 +69,7 @@ public class RegExGeneratorTest {
         List<String> regExTestList = Arrays.asList("\\*", "\\?", "\\+");
         for (String regExTest : regExTestList) {
             List<String> results = generator.generate(regExTest, numberOfResults);
-            assertEquals(results.get(0), regExTest.replace("\\",""));
+            assertEquals(results.get(0), regExTest.replace("\\", ""));
         }
     }
 
@@ -94,7 +93,7 @@ public class RegExGeneratorTest {
         for (String regExTest : regExTestList) {
             List<String> results = this.generator.generate(regExTest, numberOfResults);
             for (int x = 0; x < numberOfResults; x++) {
-                assertEquals(results.get(x), regExTest.replace("[","").replace("]",""));
+                assertEquals(results.get(x), regExTest.replace("[", "").replace("]", ""));
             }
         }
     }
@@ -143,7 +142,27 @@ public class RegExGeneratorTest {
     }
 
     @Test
-    public void testCharacterSetWithQuantifiers() {
+    public void testCharacterSetWithQuantifiersPlus() {
         assertTrue(validate("[abc]+", 1));
+    }
+
+    @Test
+    public void testCharacterSetWithQuantifiersAsteriks() {
+        assertTrue(validate("[abc]*", 1));
+    }
+
+    @Test
+    public void testCharacterSetWithQuantifiersQuestionsMark() {
+        assertTrue(validate("[abc]?", 1));
+    }
+
+    @Test
+    public void testCharacterSetWithMultiQuantifiers() {
+        assertTrue(validate("[abc]?[def]+[hij]*", 1));
+    }
+
+    @Test
+    public void testCharacterSetWithQuantifiersEscaped() {
+        assertTrue(validate("a?\\?h*", 1));
     }
 }
