@@ -33,7 +33,7 @@ public class RegExVector{
     }
 
     public String generateStringSolution() {
-        StringBuffer solution = new StringBuffer();
+        StringBuilder solution = new StringBuilder();
         for (Entity entity : this.listEntities) {
             solution.append(entity.generateSolution());
         }

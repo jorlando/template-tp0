@@ -12,7 +12,7 @@ public enum Multiplicity {
     ZERO_OR_ONE("?",0),
     ZERO_OR_MORE("*",0);
 
-    public static final int MAX_REPETITIONS = 10;
+    public static final int MAX_REPETITIONS = 20;
 
     private String charRepresentation;
     private int minRepetition;

@@ -1,7 +1,5 @@
 package ar.fiuba.tdd.template.entities;
 
-import ar.fiuba.tdd.template.enums.Multiplicity;
-
 /**
  * Created by jorlando on 19/03/16.
  */
@@ -14,7 +12,7 @@ public class GenericEntity extends Entity{
     }
 
     public String generateSolution() {
-        StringBuffer strGenerated = new StringBuffer();
+        StringBuilder strGenerated = new StringBuilder();
         for (int idxGeneration = 0; idxGeneration < this.multiplicity.getMultiplicity(); idxGeneration++) {
             int characterRandom = this.getRandomInt(MAX_ASCII_CODE);
             strGenerated.append(Character.toString((char) characterRandom));

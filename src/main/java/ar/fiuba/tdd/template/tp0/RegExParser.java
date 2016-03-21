@@ -39,7 +39,7 @@ public class RegExParser {
     public int getEndPositionSet(int initPosition) {
         int startPositionForSearch = initPosition;
         while (true) {
-            int endPosition = originalRegularExpr.indexOf(this.CHAR_END_SET, startPositionForSearch + this.NEXT_POSITION);
+            int endPosition = originalRegularExpr.indexOf(CHAR_END_SET, startPositionForSearch + NEXT_POSITION);
             if (endPosition < 0) {
                 return endPosition;
             }
@@ -55,17 +55,17 @@ public class RegExParser {
         this.checkValidSet(initPosition);
         int endPositionSet = this.getEndPositionSet(initPosition);
         SetEntity newSet = new SetEntity(initPosition, endPositionSet);
-        newSet.setElements(this.originalRegularExpr, this.CHAR_ESCAPE);
+        newSet.setElements(this.originalRegularExpr,CHAR_ESCAPE);
         newSet.setMultiplicity(this.getMultiplicity(endPositionSet));
         this.regExVector.addEntity(newSet);
-        this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
+        this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, CHAR_USED_POSITION);
     }
 
     public void addLiteral(String literalToAdd, int position) {
         LiteralEntity newLiteral = new LiteralEntity(literalToAdd, position);
         newLiteral.setMultiplicity(this.getMultiplicity(position));
         this.regExVector.addEntity(newLiteral);
-        this.originalRegularExpr = newLiteral.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
+        this.originalRegularExpr = newLiteral.replaceUsedPosition(this.originalRegularExpr, CHAR_USED_POSITION);
         if (isCharacterEscaped(position)) {
             this.originalRegularExpr = this.replaceCharacterEscaped(position);
         } else if (!this.isValidLiteralWithoutEscape(literalToAdd)) {
@@ -85,10 +85,10 @@ public class RegExParser {
     }
 
     public void findCharUsedPosition() {
-        int indexCharUsed = originalRegularExpr.indexOf(this.CHAR_USED_POSITION);
+        int indexCharUsed = originalRegularExpr.indexOf(CHAR_USED_POSITION);
         while (indexCharUsed >= 0) {
-            this.addLiteral(this.CHAR_USED_POSITION,indexCharUsed);
-            indexCharUsed = originalRegularExpr.indexOf(this.CHAR_USED_POSITION, indexCharUsed + NEXT_POSITION);
+            this.addLiteral(CHAR_USED_POSITION,indexCharUsed);
+            indexCharUsed = originalRegularExpr.indexOf(CHAR_USED_POSITION, indexCharUsed + NEXT_POSITION);
         }
     }
 
@@ -107,18 +107,18 @@ public class RegExParser {
     }
 
     public void findGenerics() {
-        this.find(this.CHAR_GENERIC);
+        this.find(CHAR_GENERIC);
     }
 
     public void findSets() {
-        this.find(this.CHAR_INIT_SET);
+        this.find(CHAR_INIT_SET);
     }
 
     public void find(String character) {
         int indexInit = this.originalRegularExpr.indexOf(character);
         while (indexInit >= 0) {
             if (!this.isCharacterEscaped(indexInit)) {
-                if (character.equals(this.CHAR_INIT_SET)) {
+                if (character.equals(CHAR_INIT_SET)) {
                     this.addSet(indexInit);
                 } else {
                     this.addGeneric(indexInit);
@@ -134,7 +134,7 @@ public class RegExParser {
         GenericEntity newGeneric = new GenericEntity(position);
         newGeneric.setMultiplicity(this.getMultiplicity(position));
         this.regExVector.addEntity(newGeneric);
-        this.originalRegularExpr = newGeneric.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
+        this.originalRegularExpr = newGeneric.replaceUsedPosition(this.originalRegularExpr, CHAR_USED_POSITION);
     }
 
     public RegExVector parse() {
@@ -149,7 +149,7 @@ public class RegExParser {
         if (indexOfCharacter == this.originalRegularExpr.length() - 1) {
             return Multiplicity.ONE;
         }
-        String charMultiplicity = this.getStringInPosition(this.originalRegularExpr, indexOfCharacter + this.NEXT_POSITION);
+        String charMultiplicity = this.getStringInPosition(this.originalRegularExpr, indexOfCharacter + NEXT_POSITION);
         return Multiplicity.getMultiplicityOfChar(charMultiplicity);
     }
 
@@ -158,12 +158,12 @@ public class RegExParser {
     }
 
     public boolean isCharacterEscaped(int position) {
-        return position != 0 && this.getStringInPosition(this.originalRegularExpr,position - 1).equals(this.CHAR_ESCAPE);
+        return position != 0 && this.getStringInPosition(this.originalRegularExpr,position - 1).equals(CHAR_ESCAPE);
     }
 
     public String replaceCharacterEscaped(int position) {
         StringBuilder newRegularExp = new StringBuilder(this.originalRegularExpr);
-        newRegularExp.setCharAt(position - 1, this.CHAR_USED_POSITION.charAt(0));
+        newRegularExp.setCharAt(position - 1, CHAR_USED_POSITION.charAt(0));
         return newRegularExp.toString();
     }
 }

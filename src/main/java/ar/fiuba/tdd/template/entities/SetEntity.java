@@ -10,13 +10,12 @@ import java.util.List;
  */
 public class SetEntity extends Entity {
 
-    List listOfElements;
+    List listOfElements = new ArrayList<>();
     int endPosition;
 
     public SetEntity(int initPosition, int finalPosition) {
         this.position = initPosition;
         this.endPosition = finalPosition;
-        this.listOfElements = new ArrayList<>();
         this.multiplicity = Multiplicity.ONE;
     }
 
@@ -48,7 +47,7 @@ public class SetEntity extends Entity {
     }
 
     public String generateSolution() {
-        StringBuffer strGenerated = new StringBuffer();
+        StringBuilder strGenerated = new StringBuilder();
         for (int idxGeneration = 0; idxGeneration < this.multiplicity.getMultiplicity(); idxGeneration++) {
             if (this.listOfElements.size() != 0) {
                 int characterRandom = this.getRandomInt(this.listOfElements.size());

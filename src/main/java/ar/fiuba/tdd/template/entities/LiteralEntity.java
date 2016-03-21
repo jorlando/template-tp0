@@ -19,7 +19,7 @@ public class LiteralEntity extends Entity{
     }
 
     public String generateSolution() {
-        StringBuffer strGenerated = new StringBuffer();
+        StringBuilder strGenerated = new StringBuilder();
         for (int idxGeneration = 0; idxGeneration < this.multiplicity.getMultiplicity(); idxGeneration++) {
             strGenerated.append(this.literal);
         }
