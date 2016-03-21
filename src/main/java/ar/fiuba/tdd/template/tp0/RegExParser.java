@@ -10,6 +10,8 @@ import ar.fiuba.tdd.template.enums.Multiplicity;
 import ar.fiuba.tdd.template.exceptions.RegExMalformedException;
 
 import java.lang.String;
+import java.util.Arrays;
+import java.util.List;
 
 public class RegExParser {
 
@@ -28,8 +30,10 @@ public class RegExParser {
         this.regExVector = new RegExVector();
     }
 
-    public boolean isValidSet(int initPosition) {
-        return (this.getEndPositionSet(initPosition) > 0);
+    public void checkValidSet(int initPosition) {
+        if (this.getEndPositionSet(initPosition) < 0) {
+            throw new RegExMalformedException();
+        }
     }
 
     public int getEndPositionSet(int initPosition) {
@@ -48,16 +52,13 @@ public class RegExParser {
     }
 
     public void addSet(int initPosition) {
+        this.checkValidSet(initPosition);
         int endPositionSet = this.getEndPositionSet(initPosition);
-        if (endPositionSet > 0) {
-            SetEntity newSet = new SetEntity(initPosition, endPositionSet);
-            newSet.setElements(this.originalRegularExpr, this.CHAR_ESCAPE);
-            newSet.setMultiplicity(this.getMultiplicity(endPositionSet));
-            this.regExVector.addEntity(newSet);
-            this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
-        } else {
-            throw new RegExMalformedException("invalid set definition");
-        }
+        SetEntity newSet = new SetEntity(initPosition, endPositionSet);
+        newSet.setElements(this.originalRegularExpr, this.CHAR_ESCAPE);
+        newSet.setMultiplicity(this.getMultiplicity(endPositionSet));
+        this.regExVector.addEntity(newSet);
+        this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
     }
 
     public void addLiteral(String literalToAdd, int position) {
@@ -67,7 +68,20 @@ public class RegExParser {
         this.originalRegularExpr = newLiteral.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
         if (isCharacterEscaped(position)) {
             this.originalRegularExpr = this.replaceCharacterEscaped(position);
+        } else if (!this.isValidLiteralWithoutEscape(literalToAdd)) {
+            throw new RegExMalformedException();
         }
+    }
+
+    public boolean isValidLiteralWithoutEscape(String literalToAnalize) {
+        List<String> invalidLiteralList = Arrays.asList("*", "?", "+", CHAR_INIT_SET, CHAR_END_SET);
+        for (String invalidLiteral : invalidLiteralList) {
+            if (invalidLiteral.equals(literalToAnalize)) {
+                return false;
+            }
+        }
+        return true;
+
     }
 
     public void findCharUsedPosition() {

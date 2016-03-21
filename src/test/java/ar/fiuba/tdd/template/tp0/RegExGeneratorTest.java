@@ -41,11 +41,11 @@ public class RegExGeneratorTest {
         assertTrue(validate(".", 1));
     }
 
-/*    @Test
+    /*@Test
     public void testAnyCharacterDebug() {
         System.out.println("START");
         RegExGenerator generator = new RegExGenerator();
-        String regEx = "[aa]+[f\\]]*";
+        String regEx = "[aa]+[f\\]]*cd}?";
         int numberOfResults = 10;
         List<String> results = generator.generate(regEx, numberOfResults);
         for (String str : results) {
@@ -90,11 +90,37 @@ public class RegExGeneratorTest {
     }
 
     @Test
+    public void testMultipliersInSet() {
+        RegExGenerator generator = new RegExGenerator();
+        int numberOfResults = 1;
+        List<String> regExTestList = Arrays.asList("[*]", "[?]", "[+]", "[+]", "[.]");
+        for (String regExTest : regExTestList) {
+            List<String> results = generator.generate(regExTest, numberOfResults);
+            for (int x = 0; x < numberOfResults; x++) {
+                assertEquals(results.get(x), regExTest.replace("[","").replace("]",""));
+            }
+        }
+    }
+
+    @Test
     public void testSetWithoutEnd() {
         thrown.expect(RegExMalformedException.class);
-        thrown.expectMessage("invalid set definition");
         RegExGenerator generator = new RegExGenerator();
-        List<String> results = generator.generate("[abc*", 1);
+        generator.generate("[abc*", 1);
+    }
+
+    @Test
+    public void testSetWithoutInit() {
+        thrown.expect(RegExMalformedException.class);
+        RegExGenerator generator = new RegExGenerator();
+        generator.generate("abc]", 1);
+    }
+
+    @Test
+    public void testNoEscapedMultiplier() {
+        thrown.expect(RegExMalformedException.class);
+        RegExGenerator generator = new RegExGenerator();
+        generator.generate("*", 1);
     }
 
     @Test

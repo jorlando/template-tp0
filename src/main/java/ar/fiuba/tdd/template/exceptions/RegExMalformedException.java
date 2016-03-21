@@ -8,8 +8,4 @@ public class RegExMalformedException extends RuntimeException {
     public RegExMalformedException() {
         super();
     }
-
-    public RegExMalformedException(String msg) {
-        super(msg);
-    }
 }
