@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class RegExGeneratorTest {
@@ -27,12 +28,36 @@ public class RegExGeneratorTest {
     }
 
     //TODO: Uncomment these tests
-    /*
+
     @Test
     public void testAnyCharacter() {
         assertTrue(validate(".", 1));
     }
 
+   /* @Test
+    public void testAnyCharacterDebug() {
+        System.out.println("START");
+        RegExGenerator generator = new RegExGenerator();
+        String regEx = "a\\?.";
+        int numberOfResults = 3;
+        List<String> results = generator.generate(regEx, numberOfResults);
+        for (String str : results) {
+            System.out.println(str);
+        }
+        assertTrue(validate(".", 1));
+    }*/
+
+    @Test
+    public void testCharUsedInOriginalRegEx() {
+        RegExGenerator generator = new RegExGenerator();
+        int numberOfResults = 3;
+        List<String> results = generator.generate("_", numberOfResults);
+        for (int x = 0; x < numberOfResults; x++) {
+            assertEquals(results.get(x), "_");
+        }
+    }
+
+/*
     @Test
     public void testMultipleCharacters() {
         assertTrue(validate("...", 1));

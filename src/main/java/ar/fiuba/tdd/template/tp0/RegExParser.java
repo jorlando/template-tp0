@@ -71,7 +71,7 @@ public class RegExParser {
         int indexCharUsed = originalRegularExpr.indexOf(this.CHAR_USED_POSITION);
         while (indexCharUsed >= 0) {
             this.addLiteral(this.CHAR_USED_POSITION,indexCharUsed);
-            indexCharUsed = originalRegularExpr.indexOf(this.CHAR_USED_POSITION);
+            indexCharUsed = originalRegularExpr.indexOf(this.CHAR_USED_POSITION, indexCharUsed + NEXT_POSITION);
         }
     }
 
