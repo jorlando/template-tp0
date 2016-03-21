@@ -7,6 +7,7 @@ import ar.fiuba.tdd.template.entities.GenericEntity;
 import ar.fiuba.tdd.template.entities.LiteralEntity;
 import ar.fiuba.tdd.template.entities.SetEntity;
 import ar.fiuba.tdd.template.enums.Multiplicity;
+import ar.fiuba.tdd.template.exceptions.RegExMalformedException;
 
 import java.lang.String;
 
@@ -54,6 +55,8 @@ public class RegExParser {
             newSet.setMultiplicity(this.getMultiplicity(endPositionSet));
             this.regExVector.addEntity(newSet);
             this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
+        } else {
+            throw new RegExMalformedException("invalid set definition");
         }
     }
 
