@@ -34,19 +34,20 @@ public class RegExGeneratorTest {
         assertTrue(validate(".", 1));
     }
 
-   /* @Test
+/*    @Test
     public void testAnyCharacterDebug() {
         System.out.println("START");
         RegExGenerator generator = new RegExGenerator();
-        String regEx = "a\\?.";
-        int numberOfResults = 3;
+        String regEx = "[abcd]+[f\\]]*";
+        int numberOfResults = 10;
         List<String> results = generator.generate(regEx, numberOfResults);
         for (String str : results) {
             System.out.println(str);
         }
+        System.out.println("END");
         assertTrue(validate(".", 1));
-    }*/
-
+    }
+*/
     @Test
     public void testCharUsedInOriginalRegEx() {
         RegExGenerator generator = new RegExGenerator();
@@ -57,7 +58,7 @@ public class RegExGeneratorTest {
         }
     }
 
-/*
+
     @Test
     public void testMultipleCharacters() {
         assertTrue(validate("...", 1));
@@ -87,6 +88,6 @@ public class RegExGeneratorTest {
     public void testCharacterSetWithQuantifiers() {
         assertTrue(validate("[abc]+", 1));
     }
-    */
+
     // TODO: Add more tests!!!
 }

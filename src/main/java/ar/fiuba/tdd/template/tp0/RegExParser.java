@@ -51,7 +51,7 @@ public class RegExParser {
         if (endPositionSet > 0) {
             SetEntity newSet = new SetEntity(initPosition, endPositionSet);
             newSet.setElements(this.originalRegularExpr, this.CHAR_ESCAPE);
-            newSet.setMultiplicity(this.getMultiplicity(initPosition));
+            newSet.setMultiplicity(this.getMultiplicity(endPositionSet));
             this.regExVector.addEntity(newSet);
             this.originalRegularExpr = newSet.replaceUsedPosition(this.originalRegularExpr, this.CHAR_USED_POSITION);
         }
@@ -129,7 +129,7 @@ public class RegExParser {
     }
 
     public Multiplicity getMultiplicity(int indexOfCharacter) {
-        if (indexOfCharacter < this.originalRegularExpr.length()) {
+        if (indexOfCharacter == this.originalRegularExpr.length() - 1) {
             return Multiplicity.ONE;
         }
         String charMultiplicity = this.getStringInPosition(this.originalRegularExpr, indexOfCharacter + this.NEXT_POSITION);

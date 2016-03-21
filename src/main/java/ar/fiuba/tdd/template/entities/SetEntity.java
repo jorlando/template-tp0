@@ -21,7 +21,7 @@ public class SetEntity extends Entity {
     }
 
     public void setElements(String regularExp, String charEscape) {
-        int pointerToRegExPosition = this.position;
+        int pointerToRegExPosition = this.position + 1;
         while (pointerToRegExPosition < this.endPosition) {
             String element = String.valueOf(regularExp.charAt(pointerToRegExPosition));
             if (element.equals(charEscape)) {
@@ -38,6 +38,7 @@ public class SetEntity extends Entity {
         int pointerToRegExPosition = this.position;
         while (pointerToRegExPosition <= this.endPosition) {
             newRegularExp.setCharAt(pointerToRegExPosition, charUsedPosition.charAt(0));
+
             pointerToRegExPosition++;
         }
         if (multiplicity != Multiplicity.ONE) {
