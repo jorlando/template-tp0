@@ -15,6 +15,8 @@ import static org.junit.Assert.assertTrue;
 
 public class RegExGeneratorTest {
 
+    RegExGenerator generator = new RegExGenerator();
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
@@ -33,8 +35,6 @@ public class RegExGeneratorTest {
                     },
                     (item1, item2) -> item1 && item2);
     }
-
-    //TODO: Uncomment these tests
 
     @Test
     public void testAnyCharacter() {
@@ -57,9 +57,8 @@ public class RegExGeneratorTest {
 
     @Test
     public void testCharUsedInOriginalRegEx() {
-        RegExGenerator generator = new RegExGenerator();
         int numberOfResults = 3;
-        List<String> results = generator.generate("_", numberOfResults);
+        List<String> results = this.generator.generate("_", numberOfResults);
         for (int x = 0; x < numberOfResults; x++) {
             assertEquals(results.get(x), "_");
         }
@@ -67,35 +66,33 @@ public class RegExGeneratorTest {
 
     @Test
     public void testEscapedMultipliers() {
-        RegExGenerator generator = new RegExGenerator();
         int numberOfResults = 1;
         List<String> regExTestList = Arrays.asList("\\*", "\\?", "\\+");
         for (String regExTest : regExTestList) {
             List<String> results = generator.generate(regExTest, numberOfResults);
-            for (int x = 0; x < numberOfResults; x++) {
-                assertEquals(results.get(x), regExTest.replace("\\",""));
-            }
+            assertEquals(results.get(0), regExTest.replace("\\",""));
         }
     }
 
     @Test
     public void testEscapedSquareBracket() {
-        RegExGenerator generator = new RegExGenerator();
-        int numberOfResults = 1;
-        List<String> results = generator.generate("[\\]]", numberOfResults);
-        for (int x = 0; x < numberOfResults; x++) {
-            assertEquals(results.get(x), "]");
-        }
+        List<String> results = this.generator.generate("[\\]]", 1);
+        assertEquals(results.get(0), "]");
+    }
 
+    @Test
+    public void testSpecialCharacterNoNeedToEscape() {
+        String regexToTest = "{ } ^ ( ) & # $ % ! = ¡ ¿ , < >";
+        List<String> results = this.generator.generate(regexToTest, 1);
+        assertEquals(results.get(0), regexToTest);
     }
 
     @Test
     public void testMultipliersInSet() {
-        RegExGenerator generator = new RegExGenerator();
         int numberOfResults = 1;
         List<String> regExTestList = Arrays.asList("[*]", "[?]", "[+]", "[+]", "[.]");
         for (String regExTest : regExTestList) {
-            List<String> results = generator.generate(regExTest, numberOfResults);
+            List<String> results = this.generator.generate(regExTest, numberOfResults);
             for (int x = 0; x < numberOfResults; x++) {
                 assertEquals(results.get(x), regExTest.replace("[","").replace("]",""));
             }
@@ -105,22 +102,19 @@ public class RegExGeneratorTest {
     @Test
     public void testSetWithoutEnd() {
         thrown.expect(RegExMalformedException.class);
-        RegExGenerator generator = new RegExGenerator();
-        generator.generate("[abc*", 1);
+        this.generator.generate("[abc*", 1);
     }
 
     @Test
     public void testSetWithoutInit() {
         thrown.expect(RegExMalformedException.class);
-        RegExGenerator generator = new RegExGenerator();
-        generator.generate("abc]", 1);
+        this.generator.generate("abc]", 1);
     }
 
     @Test
     public void testNoEscapedMultiplier() {
         thrown.expect(RegExMalformedException.class);
-        RegExGenerator generator = new RegExGenerator();
-        generator.generate("*", 1);
+        this.generator.generate("*", 1);
     }
 
     @Test
@@ -152,6 +146,4 @@ public class RegExGeneratorTest {
     public void testCharacterSetWithQuantifiers() {
         assertTrue(validate("[abc]+", 1));
     }
-
-    // TODO: Add more tests!!!
 }
