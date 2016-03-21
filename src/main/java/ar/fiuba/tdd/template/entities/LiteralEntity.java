@@ -17,4 +17,12 @@ public class LiteralEntity extends Entity{
     public String getLiteral() {
         return this.literal;
     }
+
+    public String generateSolution() {
+        StringBuffer strGenerated = new StringBuffer();
+        for (int idxGeneration = 0; idxGeneration < this.multiplicity.getMultiplicity(); idxGeneration++) {
+            strGenerated.append(this.literal);
+        }
+        return strGenerated.toString();
+    }
 }

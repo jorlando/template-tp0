@@ -8,11 +8,9 @@ import java.util.List;
 /**
  * Created by jorlando on 19/03/16.
  */
-public class SetEntity {
+public class SetEntity extends Entity {
 
-    Multiplicity multiplicity;
     List listOfElements;
-    int position;
     int endPosition;
 
     public SetEntity(int initPosition, int finalPosition) {
@@ -20,10 +18,6 @@ public class SetEntity {
         this.endPosition = finalPosition;
         this.listOfElements = new ArrayList<>();
         this.multiplicity = Multiplicity.ONE;
-    }
-
-    public void setMultiplicity(Multiplicity newMultiplicity) {
-        this.multiplicity = newMultiplicity;
     }
 
     public void setElements(String regularExp, String charEscape) {
@@ -50,6 +44,16 @@ public class SetEntity {
             newRegularExp.setCharAt(this.endPosition + 1, charUsedPosition.charAt(0));
         }
         return newRegularExp.toString();
+    }
 
+    public String generateSolution() {
+        StringBuffer strGenerated = new StringBuffer();
+        for (int idxGeneration = 0; idxGeneration < this.multiplicity.getMultiplicity(); idxGeneration++) {
+            if (this.listOfElements.size() != 0) {
+                int characterRandom = this.getRandomInt(this.listOfElements.size());
+                strGenerated.append(this.listOfElements.get(characterRandom));
+            }
+        }
+        return strGenerated.toString();
     }
 }

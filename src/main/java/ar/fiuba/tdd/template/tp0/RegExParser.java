@@ -12,14 +12,15 @@ import java.lang.String;
 
 public class RegExParser {
 
-    String originalRegularExpr = "";
     public static final String CHAR_USED_POSITION = "_";
     public static final String CHAR_INIT_SET = "[";
     public static final String CHAR_END_SET = "]";
     public static final String CHAR_ESCAPE = "\\";
     public static final String CHAR_GENERIC = ".";
-    RegExVector regExVector;
     public static final int NEXT_POSITION = 1;
+
+    String originalRegularExpr = "";
+    RegExVector regExVector;
 
     public RegExParser(String regEx) {
         this.originalRegularExpr = regEx;

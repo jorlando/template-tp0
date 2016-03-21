@@ -1,33 +1,50 @@
 package ar.fiuba.tdd.template.tp0;
 
-import ar.fiuba.tdd.template.entities.GenericEntity;
-import ar.fiuba.tdd.template.entities.LiteralEntity;
-import ar.fiuba.tdd.template.entities.SetEntity;
+import ar.fiuba.tdd.template.entities.Entity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * Created by jorlando on 19/03/16.
  */
 
-public class RegExVector {
+public class RegExVector{
 
-    List listEntities;
+    List<Entity> listEntities;
 
     public RegExVector() {
         listEntities = new ArrayList<>();
     }
 
-    public void addEntity(LiteralEntity entity) {
+    public void addEntity(Entity entity) {
         listEntities.add(entity);
     }
 
-    public void addEntity(SetEntity entity) {
-        listEntities.add(entity);
+    public List<String> generateSolutions(int numberOfSolutions) {
+        List solutions = new ArrayList<>();
+        this.sortEntities();
+        for (int idxGenerateSolutions = 0; idxGenerateSolutions < numberOfSolutions; idxGenerateSolutions++) {
+            solutions.add(this.generateStringSolution());
+        }
+        return solutions;
     }
 
-    public void addEntity(GenericEntity entity) {
-        listEntities.add(entity);
+    public String generateStringSolution() {
+        StringBuffer solution = new StringBuffer();
+        for (Entity entity : this.listEntities) {
+            solution.append(entity.generateSolution());
+        }
+        return solution.toString();
+    }
+
+    private void sortEntities() {
+        Collections.sort(listEntities, new Comparator<Entity>() {
+            public int compare(Entity entityA, Entity entityB) {
+                return entityA.getPosition() - entityB.getPosition();
+            }
+        });
     }
 }

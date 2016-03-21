@@ -11,14 +11,9 @@ public class RegExGenerator {
     //    this.maxLength = maxLength;
     //}
 
-    // TODO: Uncomment parameters
-    public List<String> generate(/*String regEx, int numberOfResults*/) {
-        return new ArrayList<String>() {
-            {
-                add("a");
-                add("b");
-                add("c");
-            }
-        };
+    public List<String> generate(String regEx, int numberOfResults) {
+        RegExParser newRegExParser = new RegExParser(regEx);
+        RegExVector newRegexVector = newRegExParser.parse();
+        return newRegexVector.generateSolutions(numberOfResults);
     }
 }
